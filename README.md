@@ -40,12 +40,13 @@ If the search pattern returns empty results,
 press tab twice to exit to the prompt and start over.
 
 ```sh
+bash$ gcc -save-temps -*null*[tab]
 . . .
 -fno-nonnull-objects
 --nonnull-objects
 --no-nonnull-objects
 [-] ~~~~~~~~~~~~~~~~~~~~~~~~~
-*null*zero*
+*null*zero*[tab]
 [-] ~~~~~~~~~~~~~~~~~~~~~~~~~
   [tab][tab]
 
