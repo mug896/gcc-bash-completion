@@ -41,10 +41,10 @@ _gcc()
     done
 
     if [[ $PREO == @(-Wl|-Wa) ]]; then
+        HELP=$( $CMD -v --help 2> /dev/null )
         [[ $PREO == -Wl ]] && args="ld" || args="as"
         local filter_str='/^Usage: .*'"$args"' /,/^Report bugs to/' 
 
-        HELP=$( $CMD -v --help 2> /dev/null )
         if [[ $CUR == -* ]]; then
             WORDS=$(<<< $HELP sed -En "$filter_str"'{
             s/^\s{,3}((-[^ ,=]+([ =][^ ,]+)?)(, *-[^ ,=]+([ =][^ ,]+)?)*)(.*)/\1/g; tX;
