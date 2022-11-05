@@ -2,5 +2,5 @@
 A bash script to complete a command line of gcc
 
 
-![](https://mug896.github.io/gcc-bash-completion/gcc-bash-completion.png)
+[![](https://mug896.github.io/img/gcc-bash-completion.png)](https://mug896.github.io/img/gcc-bash-completion.mp4)
 
