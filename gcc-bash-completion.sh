@@ -16,8 +16,8 @@ _gcc()
     _init_comp_wordbreaks
     [[ $COMP_WORDBREAKS != *","* ]] && COMP_WORDBREAKS+=","
 
-    local IFS=$' \t\n' CUR CUR_O PREV PREV_O PREV2 PREO PREO2 
-    local CMD=$1 CMD2 WORDS COMP_LINE2 args i v
+    local IFS=$' \t\n' CUR CUR_O PREV PREV_O PREV2 PREO PREO2
+    local CMD=$1 CMD2 WORDS COMP_LINE2 HELP args i v
 
     CUR=${COMP_WORDS[COMP_CWORD]} CUR_O=$CUR
     [[ ${COMP_LINE:COMP_POINT-1:1} = " " || $COMP_WORDBREAKS == *$CUR* ]] && CUR=""
@@ -40,12 +40,11 @@ _gcc()
         [[ ${COMP_WORDS[i]} == -* ]] && { PREO2=${COMP_WORDS[i]}; break ;}
     done
 
-    local HELP=$( $CMD -v --help 2> /dev/null )
-
     if [[ $PREO == @(-Wl|-Wa) ]]; then
         [[ $PREO == -Wl ]] && args="ld" || args="as"
         local filter_str='/^Usage: .*'"$args"' /,/^Report bugs to/' 
 
+        HELP=$( $CMD -v --help 2> /dev/null )
         if [[ $CUR == -* ]]; then
             WORDS=$(<<< $HELP sed -En "$filter_str"'{
             s/^\s{,3}((-[^ ,=]+([ =][^ ,]+)?)(, *-[^ ,=]+([ =][^ ,]+)?)*)(.*)/\1/g; tX;
@@ -60,6 +59,11 @@ _gcc()
         elif [[ ($PREV == -* && $PREV != $PREO) || $PREV2 == -z ]]; then
             WORDS=$(<<< $HELP sed -En 's/.*'"$PREV"'[ =]\[([^]]+)].*/\1/; tX; b; :X s/\|/\n/g; p')
         fi
+
+    elif [[ $PREO == --help ]]; then
+        HELP=$( $CMD -v --help 2> /dev/null )
+        [[ $COMP_WORDBREAKS != *"^"* ]] && COMP_WORDBREAKS+="^"
+        WORDS=$( <<< $HELP sed -En '/^\s{,5}--help=/{s/--help=|[^[:alpha:]]/\n/g; p; Q}' )
 
     elif [[ $CUR == -* || $PREO == --completion ]]; then
         WORDS=$( $CMD --completion="-" | sed -E 's/([ =]).*$/\1/' )
@@ -80,10 +84,6 @@ _gcc()
             [[ $PREO2 == $PREV ]] && args="$PREV=" || args="$PREO2=$PREV="
             WORDS=$( $CMD --completion="$args" | sed -E 's/^'"$args"'//; s/(=).*$/\1/' )
         fi
-
-    elif [[ $PREO == --help ]]; then
-            [[ $COMP_WORDBREAKS != *"^"* ]] && COMP_WORDBREAKS+="^"
-            WORDS=$( <<< $HELP sed -En '/^\s{,5}--help=/{s/--help=|[^[:alpha:]]/\n/g; p; Q}' )
 
     elif [[ -n $PREO ]]; then
         [[ $PREV == $PREO ]] && args="$PREV=" || args="$PREO=$PREV="
