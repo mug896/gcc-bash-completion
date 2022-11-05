@@ -2,9 +2,5 @@
 A bash script to complete a command line of gcc
 
 
-![](https://mug896.github.io/img/gcc-bash-completion.png)
+![](https://mug896.github.io/gcc-bash-completion/gcc-bash-completion.png)
 
-
-<video controls preload=auto>
-  <source src="https://mug896.github.io/img/gcc-bach-completion.mp4" type="video/mp4">
-</video>
