@@ -98,7 +98,7 @@ _gcc()
             IFS=$'\n' COMPREPLY=($(compgen -W "$WORDS" -- "$CUR"))
         fi
     fi
-    [[ ${COMPREPLY: -1} == [=.,] ]] && compopt -o nospace
+    [[ ${COMPREPLY: -1} == [=,] ]] && compopt -o nospace
 }
 
 extglob_reset=$(shopt -p extglob)
