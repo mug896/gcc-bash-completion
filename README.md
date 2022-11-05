@@ -36,6 +36,22 @@ You can see the command usage with this video.
 
 [![](https://mug896.github.io/img/gcc-bash-completion.png)](https://mug896.github.io/img/gcc-bash-completion.mp4)
 
+If the search pattern returns empty results
+tap twice to go out to the prompt.
+and then start over
+
+```sh
+. . .
+-fno-nonnull-objects
+--nonnull-objects
+--no-nonnull-objects
+[-] ~~~~~~~~~~~~~~~~~~~~~~~~~
+*null*empty*
+[-] ~~~~~~~~~~~~~~~~~~~~~~~~~
+  [tab][tab]
+
+bash$ gcc -save-temps -*zero*null*[tab] 
+```
 
 ## Installation
 
