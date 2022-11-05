@@ -72,7 +72,6 @@ _gcc()
             for v in $WORDS; do 
                 let aar[$v]++
                 if [[ $v == $CUR && ${aar[$v]} -eq 1 ]]; then
-                    args+=$'\n'$v
                     echo -e "\\e[36m$v\\e[0m"
                 fi
             done | less -FRSXi
