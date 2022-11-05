@@ -45,7 +45,7 @@ press tab twice to exit to the prompt and start over.
 --nonnull-objects
 --no-nonnull-objects
 [-] ~~~~~~~~~~~~~~~~~~~~~~~~~
-*null*empty*
+*null*zero*
 [-] ~~~~~~~~~~~~~~~~~~~~~~~~~
   [tab][tab]
 
