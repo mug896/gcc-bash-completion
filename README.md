@@ -2,4 +2,4 @@
 A bash script to complete a command line of gcc
 
 
-![]("https://mug896.github.io/img/gcc-bach-completion.png")
+![](https://mug896.github.io/gcc-bash-completion/gcc-bach-completion.png)
