@@ -34,7 +34,6 @@ cet-report=               loadfltr                  nounique
 
 [![](https://mug896.github.io/img/gcc-bash-completion.png)](https://mug896.github.io/img/gcc-bash-completion.mp4)
 
-> please leave an issue above if you have any problems using this script.
 
 ## Installation
 
@@ -42,3 +41,4 @@ Copy contents of gcc-bash-completion.sh to ~/.bash_completion
 open new terminal and try auto completion !
 
 
+> please leave an issue above if you have any problems using this script.
