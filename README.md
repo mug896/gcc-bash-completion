@@ -9,14 +9,16 @@ For example, you can search for completion words using `*`, `?`, `[...]` glob ch
 while writing command line.
 
 ```sh
-bash$ gcc -save-temps -*array*[tab]
+bash$ gcc -save-temps -*alias*[tab]
 . . .
---warn-no-array-parameter
--Warray-parameter=
---warn-array-parameter=
--Warray-temporaries
--Wno-array-temporaries
---warn-array-temporaries
+-Wattribute-alias=
+--warn-attribute-alias=
+-Wstrict-aliasing
+-Wno-strict-aliasing
+--warn-strict-aliasing
+--warn-no-strict-aliasing
+-Wstrict-aliasing=
+--warn-strict-aliasing=
 . . .                       # "q"
 [tab][tab]                  # [tab][tab] to exit to the prompt.
 
