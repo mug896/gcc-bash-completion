@@ -40,11 +40,28 @@ _gcc()
         [[ ${COMP_WORDS[i]} == -* ]] && { PREO2=${COMP_WORDS[i]}; break ;}
     done
 
-    if [[ $CUR != -* && $PREO != --completion ]]; then
-        local HELP=$( $CMD -v --help 2> /dev/null )
-    fi
+    local HELP=$( $CMD -v --help 2> /dev/null )
 
-    if [[ $CUR == -* || $PREO == --completion ]]; then
+    if [[ $PREO == @(-Wl|-Wa) ]]; then
+        [[ $PREO == -Wl ]] && args="ld" || args="as"
+        local filter_str='/^Usage: .*'"$args"' /,/^Report bugs to/' 
+
+        if [[ $CUR == -* ]]; then
+            WORDS=$(<<< $HELP sed -En "$filter_str"'{
+            s/^\s{,3}((-[^ ,=]+([ =][^ ,]+)?)(, *-[^ ,=]+([ =][^ ,]+)?)*)(.*)/\1/g; tX;
+            b; :X s/((^|[^[:alnum:]])-[][[:alnum:]_+-]+=?)|./\1 /g; 
+            s/[,/ ]+/\n/g; s/\[=$/=/Mg; s/\[[[:alnum:]-]+$//Mg;  
+            :Y h; tR1; :R1 s/([^=]+)\[(\|?(\w+-?))+](.*)/\1\3\4/; p; tZ; b; 
+            :Z g; s/\|?\w+-?]/]/; tR2 :R2 s/-\[]([[:alnum:]])/-\1/p; tE; /\[]/! bY :E }')
+
+        elif [[ $PREO == -Wl && $PREV == -z ]]; then
+            WORDS=$(<<< $HELP sed -En "$filter_str"'{ s/^\s*-z ([[:alnum:]-]+=?).*/\1/p }')
+        
+        elif [[ ($PREV == -* && $PREV != $PREO) || $PREV2 == -z ]]; then
+            WORDS=$(<<< $HELP sed -En 's/.*'"$PREV"'[ =]\[([^]]+)].*/\1/; tX; b; :X s/\|/\n/g; p')
+        fi
+
+    elif [[ $CUR == -* || $PREO == --completion ]]; then
         WORDS=$( $CMD --completion="-" | sed -E 's/([ =]).*$/\1/' )
         if [[ $CUR == *[*?[]* ]]; then
             declare -A aar; IFS=$'\n'; args=; echo
@@ -67,25 +84,6 @@ _gcc()
     elif [[ $PREO == --help ]]; then
             [[ $COMP_WORDBREAKS != *"^"* ]] && COMP_WORDBREAKS+="^"
             WORDS=$( <<< $HELP sed -En '/^\s{,5}--help=/{s/--help=|[^[:alpha:]]/\n/g; p; Q}' )
-
-    elif [[ $PREO == @(-Wl|-Wa) ]]; then
-        [[ $PREO == -Wl ]] && args="ld" || args="as"
-        local filter_str='/^Usage: .*'"$args"' /,/^Report bugs to/' 
-
-        if [[ $CUR == -* ]]; then
-            WORDS=$(<<< $HELP sed -En "$filter_str"'{
-            s/^\s{,3}((-[^ ,=]+([ =][^ ,]+)?)(, *-[^ ,=]+([ =][^ ,]+)?)*)(.*)/\1/g; tX;
-            b; :X s/((^|[^[:alnum:]])-[][[:alnum:]_+-]+=?)|./\1 /g; 
-            s/[,/ ]+/\n/g; s/\[=$/=/Mg; s/\[[[:alnum:]-]+$//Mg;  
-            :Y h; tR1; :R1 s/([^=]+)\[(\|?(\w+-?))+](.*)/\1\3\4/; p; tZ; b; 
-            :Z g; s/\|?\w+-?]/]/; tR2 :R2 s/-\[]([[:alnum:]])/-\1/p; tE; /\[]/! bY :E }')
-
-        elif [[ $PREO == -Wl && $PREV == -z ]]; then
-            WORDS=$(<<< $HELP sed -En "$filter_str"'{ s/^\s*-z ([[:alnum:]-]+=?).*/\1/p }')
-        
-        elif [[ ($PREV == -* && $PREV != $PREO) || $PREV2 == -z ]]; then
-            WORDS=$(<<< $HELP sed -En 's/.*'"$PREV"'[ =]\[([^]]+)].*/\1/; tX; b; :X s/\|/\n/g; p')
-        fi
 
     elif [[ -n $PREO ]]; then
         [[ $PREV == $PREO ]] && args="$PREV=" || args="$PREO=$PREV="
