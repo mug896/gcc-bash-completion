@@ -17,8 +17,8 @@ bash$ gcc -save-temps -*array*[tab]
 -Warray-temporaries
 -Wno-array-temporaries
 --warn-array-temporaries
-. . .                          # "q"
-[tab][tab]                     # [tab][tab] to exit to the prompt.
+. . .                       # "q"
+[tab][tab]                  # [tab][tab] to exit to the prompt.
 
 bash$ gcc -save-temps -Wl,-z,[tab]
 bndplt                    lam-u57-report=           nostart-stop-gc
