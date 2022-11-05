@@ -32,6 +32,8 @@ cet-report=               loadfltr                  nounique
 . . .
 ```
 
+You can see the command usage with this video.
+
 [![](https://mug896.github.io/img/gcc-bash-completion.png)](https://mug896.github.io/img/gcc-bash-completion.mp4)
 
 
