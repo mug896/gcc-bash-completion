@@ -2,8 +2,8 @@
 
 This is a gcc bash completion function that uses the same `gcc --completion="str"` 
 command as the original gcc completion function for word completion.
-So there is no difference in the results.
-Just added a few features.
+so there is no difference in the results.
+just added a few features.
 
 For example, you can search for completion words using `*`, `?`, `[...]` glob characters
 while writing command line.
