@@ -37,7 +37,7 @@ You can see the command usage with this video.
 [![](https://mug896.github.io/img/gcc-bash-completion.png)](https://mug896.github.io/img/gcc-bash-completion.mp4)
 
 If the search pattern returns empty results,
-press tab twice to exit to the prompt and start over
+press tab twice to exit to the prompt and start over.
 
 ```sh
 . . .
