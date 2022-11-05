@@ -82,12 +82,12 @@ _gcc()
 
         elif [[ $PREO == --completion && $PREV != $PREO ]]; then
             [[ $PREO2 == $PREV ]] && args="$PREV=" || args="$PREO2=$PREV="
-            WORDS=$( $CMD --completion="$args" | sed -E 's/^'"$args"'//; s/(=).*$/\1/' )
+            WORDS=$( $CMD --completion="$args" | sed -E 's/^'"$args"'//; s/=.*$/=/' )
         fi
 
     elif [[ -n $PREO ]]; then
         [[ $PREV == $PREO ]] && args="$PREV=" || args="$PREO=$PREV="
-        WORDS=$( $CMD --completion="$args" | sed -E 's/^'"$args"'//; s/(=).*$/\1/' )
+        WORDS=$( $CMD --completion="$args" | sed -E 's/^'"$args"'//; s/=.*$/=/' )
     fi
 
     if [[ -z $COMPREPLY ]]; then
