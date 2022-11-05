@@ -25,6 +25,11 @@ bash$ gcc -save-temps -f*array*[tab]
 -fno-stack-arrays
 [-f] ~~~~~~~~~~~~~~~~~~~~~~~~~
 
+bash$ gcc -save-temps -Wl,-z,[tab]
+bndplt                    lam-u57-report=           nostart-stop-gc
+call-nop=                 lazy                      notext
+cet-report=               loadfltr                  nounique
+. . .
 ```
 
 [![](https://mug896.github.io/img/gcc-bash-completion.png)](https://mug896.github.io/img/gcc-bash-completion.mp4)
