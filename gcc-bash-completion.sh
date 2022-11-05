@@ -75,9 +75,8 @@ _gcc()
                     args+=$'\n'$v
                     echo -e "\\e[36m$v\\e[0m"
                 fi
-            done >&2
-            echo "[${CUR%%[[*?]*}] ~~~~~~~~~~~~~~~~~~~~~~~~~" >&2
-            args+=" "
+            done | less -FRSXi
+            args="-"
             IFS=$'\n' COMPREPLY=($(compgen -W "$args" ))
 
         elif [[ $PREO == --completion && $PREV != $PREO ]]; then

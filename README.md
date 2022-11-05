@@ -9,21 +9,16 @@ For example, you can search for completion words using `*`, `?`, `[...]` glob ch
 while writing command line.
 
 ```sh
-bash$ gcc -save-temps -f*array*[tab]
--fcheck-array-temporaries
--fno-check-array-temporaries
--fchkp-flexible-struct-trailing-arrays
--fno-chkp-flexible-struct-trailing-arrays
--fchkp-narrow-to-innermost-array
--fcoarray=
--fmax-array-constructor=
--fprefetch-loop-arrays
--fno-prefetch-loop-arrays
--frepack-arrays
--fno-repack-arrays
--fstack-arrays
--fno-stack-arrays
-[-f] ~~~~~~~~~~~~~~~~~~~~~~~~~
+bash$ gcc -save-temps -*array*[tab]
+. . .
+--warn-no-array-parameter
+-Warray-parameter=
+--warn-array-parameter=
+-Warray-temporaries
+-Wno-array-temporaries
+--warn-array-temporaries
+. . .                          # "q"
+[tab][tab]                     # [tab][tab] to exit to the prompt.
 
 bash$ gcc -save-temps -Wl,-z,[tab]
 bndplt                    lam-u57-report=           nostart-stop-gc
@@ -32,26 +27,6 @@ cet-report=               loadfltr                  nounique
 . . .
 ```
 
-You can see the command usage with this video.
-
-[![](https://mug896.github.io/img/gcc-bash-completion.png)](https://mug896.github.io/img/gcc-bash-completion.mp4)
-
-If the search pattern returns empty results,
-press tab twice to exit to the prompt and start over.
-
-```sh
-bash$ gcc -save-temps -*null*[tab]
-. . .
--fno-nonnull-objects
---nonnull-objects
---no-nonnull-objects
-[-] ~~~~~~~~~~~~~~~~~~~~~~~~~
-*null*zero*[tab]
-[-] ~~~~~~~~~~~~~~~~~~~~~~~~~
-  [tab][tab]
-
-bash$ gcc -save-temps -*zero*null*[tab] 
-```
 
 ## Installation
 
