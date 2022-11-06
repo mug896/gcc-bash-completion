@@ -22,6 +22,19 @@ bash$ gcc -save-temps -*alias*[tab]
 . . .                       # "q"
 [tab][tab]                  # [tab][tab] to exit to the prompt.
 
+---------------------------------------------------------
+
+bash$ gcc -save-temps -*alias*[tab]
+. . .
+-Wstrict-aliasing=
+--warn-strict-aliasing=
+. . .                         # "q"
+[backspace]Wstrict-al[tab]    # one backspace key needed.
+or
+[backspace]-warn-stri[tab]    # one "-" in front is hidden.
+
+----------------------------------------------------------
+
 bash$ gcc -save-temps -Wl,-z,[tab]
 bndplt                    lam-u57-report=           nostart-stop-gc
 call-nop=                 lazy                      notext
