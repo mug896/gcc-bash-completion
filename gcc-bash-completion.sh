@@ -28,7 +28,7 @@ _gcc()
     fi
     COMP_LINE2=${COMP_LINE:0:$COMP_POINT}
     local i arr
-    eval arr=( $COMP_LINE2 )
+    eval arr=( $COMP_LINE2 ) 2> /dev/null
     for (( i = ${#arr[@]} - 1; i > 0; i-- )); do
         if [[ ${arr[i]} == -* ]]; then
             PREO=${arr[i]%%[^[:alnum:]_-]*}
