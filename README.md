@@ -29,9 +29,9 @@ bash$ gcc -save-temps -*alias*[tab]
 -fno-strict-aliasing
 --strict-aliasing
 . . .                          # "q"
-[backspace]fno-stric[tab]      # one backspace key needed.
+[backspace]fno-stric[tab]      # one backspace key is needed.
 or
-[backspace]-strict-ali[tab]    # one "-" in front is hidden.
+[backspace]-strict-ali[tab]    # one "-" char in front is hidden.
 
 ----------------------------------------------------------
 
