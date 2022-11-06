@@ -26,12 +26,12 @@ bash$ gcc -save-temps -*alias*[tab]
 
 bash$ gcc -save-temps -*alias*[tab]
 . . .
--Wstrict-aliasing=
---warn-strict-aliasing=
-. . .                         # "q"
-[backspace]Wstrict-al[tab]    # one backspace key needed.
+-fno-strict-aliasing
+--strict-aliasing
+. . .                       # "q"
+[backspace]fno-stric[tab]   # one backspace key needed.
 or
-[backspace]-warn-stri[tab]    # one "-" in front is hidden.
+[backspace]-stric[tab]      # one "-" in front is hidden.
 
 ----------------------------------------------------------
 
