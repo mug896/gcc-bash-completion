@@ -1,7 +1,7 @@
 # Gcc Bash Completion
 
 This is a gcc bash completion function that uses the same `gcc --completion="str"` 
-command as the original function for word completion.
+command as the original function for generating completion words.
 so there is no difference in the results.
 just added a few features.
 
