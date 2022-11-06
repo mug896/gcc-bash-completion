@@ -40,6 +40,12 @@ bndplt                    lam-u57-report=           nostart-stop-gc
 call-nop=                 lazy                      notext
 cet-report=               loadfltr                  nounique
 . . .
+
+----------------------------------------------------------
+
+bash$ gcc -Q -O2 --help=[tab]
+common        optimizers    separate      undocumented  
+joined        params        target        warnings
 ```
 
 
