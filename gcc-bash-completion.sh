@@ -66,7 +66,7 @@ _gcc()
         WORDS=$( <<< $HELP sed -En '/^\s{,5}--help=/{s/--help=|[^[:alpha:]]/\n/g; p; Q}' )
 
     elif [[ $CUR == -* || $PREO == --completion ]]; then
-        WORDS=$( $CMD --completion="-" | sed -E 's/([ =]).*$/\1/' )
+        WORDS=$( $CMD --completion="-" | sed -E 's/([ \t=]).*$/\1/' )
         if [[ $CUR == *[*?[]* ]]; then
             declare -A aar; IFS=$'\n'; args=; echo
             for v in $WORDS; do 
@@ -76,7 +76,7 @@ _gcc()
                 fi
             done | less -FRSXi
             args="-"
-            IFS=$'\n' COMPREPLY=($(compgen -W "$args" ))
+            IFS=$'\n' COMPREPLY=($( compgen -W "$args" ))
 
         elif [[ $PREO == --completion && $PREV != $PREO ]]; then
             [[ $PREO2 == $PREV ]] && args="$PREV=" || args="$PREO2=$PREV="
