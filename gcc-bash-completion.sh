@@ -17,7 +17,7 @@ _gcc()
     [[ $COMP_WORDBREAKS != *","* ]] && COMP_WORDBREAKS+=","
 
     local IFS=$' \t\n' CUR CUR_O PREV PREV_O PREV2 PREO PREO2
-    local CMD=$1 CMD2 WORDS COMP_LINE2 HELP args i v
+    local CMD=$1 CMD2 WORDS COMP_LINE2 HELP args arr i v
 
     CUR=${COMP_WORDS[COMP_CWORD]} CUR_O=$CUR
     [[ ${COMP_LINE:COMP_POINT-1:1} = " " || $COMP_WORDBREAKS == *$CUR* ]] && CUR=""
@@ -27,7 +27,6 @@ _gcc()
         [[ $CUR_O == [,=] ]] && PREV2=${COMP_WORDS[COMP_CWORD-3]} || PREV2=${COMP_WORDS[COMP_CWORD-4]}
     fi
     COMP_LINE2=${COMP_LINE:0:$COMP_POINT}
-    local i arr
     eval arr=( $COMP_LINE2 ) 2> /dev/null
     for (( i = ${#arr[@]} - 1; i > 0; i-- )); do
         if [[ ${arr[i]} == -* ]]; then
