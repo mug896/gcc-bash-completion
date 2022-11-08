@@ -67,15 +67,14 @@ _gcc()
     elif [[ $CUR == -* || $PREO == --completion ]]; then
         WORDS=$( $CMD --completion="-" | sed -E 's/([ \t=]).*$/\1/' )
         if [[ $CUR == *[*?[]* ]]; then
-            declare -A aar; IFS=$'\n'; args=; echo
+            declare -A aar; IFS=$'\n'; echo
             for v in $WORDS; do 
                 let aar[$v]++
                 if [[ $v == $CUR && ${aar[$v]} -eq 1 ]]; then
                     echo -e "\\e[36m$v\\e[0m"
                 fi
             done | less -FRSXi
-            args="-"
-            IFS=$'\n' COMPREPLY=($( compgen -W "$args" ))
+            IFS=$'\n' COMPREPLY=( "-" )
 
         elif [[ $PREO == --completion && $PREV != $PREO ]]; then
             [[ $PREO2 == $PREV ]] && args="$PREV=" || args="$PREO2=$PREV="
