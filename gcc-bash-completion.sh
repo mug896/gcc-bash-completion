@@ -56,7 +56,7 @@ _gcc()
             WORDS=$(<<< $HELP sed -En "$filter_str"'{ s/^\s*-z ([[:alnum:]-]+=?).*/\1/p }')
         
         elif [[ ($PREV == -* && $PREV != $PREO) || $PREV2 == -z ]]; then
-            WORDS=$(<<< $HELP sed -En 's/.* '"$PREV"'[ =]\[([^]]+)].*/\1/; tX; b; :X s/\|/\n/g; p')
+            WORDS=$(<<< $HELP sed -En 's/.* '"$PREV"'[ =]\[([^]]+)].*/\1/; tX; b; :X s/[,|]/\n/g; p')
         fi
 
     elif [[ $PREO == --help ]]; then
