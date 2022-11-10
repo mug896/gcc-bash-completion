@@ -22,17 +22,6 @@ bash$ gcc -save-temps -*alias*[tab]
 . . .                       # "q"
 [tab]                       # [tab] to exit to the prompt.
 
----------------------------------------------------------
-
-bash$ gcc -save-temps -*alias*[tab]
-. . .
--fno-strict-aliasing
---strict-aliasing
-. . .                          # "q"
-[backspace]fno-stric[tab]      # one backspace key is needed.
-or
-[backspace]-strict-ali[tab]    # one "-" char in front is hidden.
-
 ----------------------------------------------------------
 
 bash$ gcc -save-temps -Wl,-z,[tab]
