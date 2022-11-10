@@ -9,6 +9,7 @@ _init_comp_wordbreaks()
         "$'PROMPT_COMMAND=${PROMPT_COMMAND#*$\'\\n\'}\n'$PROMPT_COMMAND
     fi
 }
+_gcc_bind() { bind '"\011": complete' ;}
 _gcc()
 {
     # It is recommended that every completion function starts with _init_comp_wordbreaks,
@@ -75,6 +76,7 @@ _gcc()
                 fi
             done | less -FRSXi
             IFS=$'\n' COMPREPLY=( "-" )
+            bind -x '"\011":_gcc_bind'
 
         elif [[ $PREO == --completion && $PREV != $PREO ]]; then
             [[ $PREO2 == $PREV ]] && args="$PREV=" || args="$PREO2=$PREV="
