@@ -75,8 +75,8 @@ _gcc()
                     echo -e "\\e[36m$v\\e[0m"
                 fi
             done | less -FRSXi
-            IFS=$'\n' COMPREPLY=( "-" )
-            bind -x '"\011":_gcc_bind'
+            IFS=$'\n' COMPREPLY=( "${CUR_O%%[[*?]*}" )
+            bind -x '"\011": _gcc_bind'
 
         elif [[ $PREO == --completion && $PREV != $PREO ]]; then
             [[ $PREO2 == $PREV ]] && args="$PREV=" || args="$PREO2=$PREV="
