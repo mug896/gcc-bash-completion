@@ -20,7 +20,7 @@ bash$ gcc -save-temps -*alias*[tab]
 -Wstrict-aliasing=
 --warn-strict-aliasing=
 . . .                       # "q"
-[tab][tab]                  # [tab][tab] to exit to the prompt.
+[tab]                       # [tab] to exit to the prompt.
 
 ---------------------------------------------------------
 
