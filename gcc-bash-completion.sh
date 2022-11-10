@@ -66,7 +66,7 @@ _gcc()
 
     elif [[ $CUR == -* || $PREO == --completion ]]; then
         WORDS=$( $CMD --completion="-" | sed -E 's/([ \t=]).*$/\1/' )
-        if [[ $CUR == *[*?[]* ]]; then
+        if [[ $CUR == *[[*?]* ]]; then
             declare -A aar; IFS=$'\n'; echo
             for v in $WORDS; do 
                 let aar[$v]++
