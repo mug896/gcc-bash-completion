@@ -100,7 +100,8 @@ shopt -s extglob
 WORDS="cc gcc c++ g++ gfortran f77 f95 "
 WORDS+=$( shopt -s nullglob; IFS=:
 for dir in $PATH; do
-    cd "$dir" && echo gcc-+([0-9]) g++-+([0-9]) *-gcc *-g++ *-gcc-+([0-9]) *-g++-+([0-9])
+    cd "$dir" 2>/dev/null && 
+    echo gcc-+([0-9]) g++-+([0-9]) *-gcc *-g++ *-gcc-+([0-9]) *-g++-+([0-9])
 done 
 )
 complete -o default -o bashdefault -F _gcc $WORDS
