@@ -40,12 +40,12 @@ _gcc()
         [[ ${COMP_WORDS[i]} == -* ]] && { PREO2=${COMP_WORDS[i]}; break ;}
     done
 
-    if [[ $PREO == @(-Wl|-Wa) ]]; then
+    if [[ $PREO == @(-Wl|-Wa) || $PREV == @(-Xlinker|-Xassembler) ]]; then
         HELP=$( $CMD -v --help 2> /dev/null )
-        [[ $PREO == -Wl ]] && args="ld" || args="as"
+        [[ $PREO == -Wl || $PREV == -Xlinker ]] && args="ld" || args="as"
         local filter_str='/^Usage: .*'"$args"' /,/^Report bugs to/' 
 
-        if [[ $CUR == -* ]]; then
+        if [[ $CUR == -* || $PREV == @(-Xlinker|-Xassembler) ]]; then
             WORDS=$(<<< $HELP sed -En "$filter_str"'{
             s/^\s{,3}((-[^ ,=]+([ =][^ ,]+)?)(, *-[^ ,=]+([ =][^ ,]+)?)*)(.*)/\1/g; tX;
             b; :X s/((^|[^[:alnum:]])-[][[:alnum:]_+-]+=?)|./\1 /g; 
@@ -100,7 +100,7 @@ shopt -s extglob
 WORDS="cc gcc c++ g++ gfortran f77 f95 "
 WORDS+=$( shopt -s nullglob; IFS=:
 for dir in $PATH; do
-    cd "$dir" 2>/dev/null && 
+    cd "$dir" 2>/dev/null &&
     echo gcc-+([0-9]) g++-+([0-9]) *-gcc *-g++ *-gcc-+([0-9]) *-g++-+([0-9])
 done 
 )
