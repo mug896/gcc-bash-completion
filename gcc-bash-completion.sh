@@ -17,95 +17,95 @@ _gcc()
     _init_comp_wordbreaks
     [[ $COMP_WORDBREAKS != *","* ]] && COMP_WORDBREAKS+=","
 
-    local IFS=$' \t\n' CUR CUR_O PREV PREV_O PREV2 PREO PREO2
-    local CMD=$1 CMD2 WORDS COMP_LINE2 HELP args arr i v
+    local IFS=$' \t\n' cur cur_o prev prev_o prev2 preo preo2
+    local cmd=$1 cmd2 words comp_line2 help args arr i v
 
-    CUR=${COMP_WORDS[COMP_CWORD]} CUR_O=$CUR
-    [[ ${COMP_LINE:COMP_POINT-1:1} = " " || $COMP_WORDBREAKS == *$CUR* ]] && CUR=""
-    PREV=${COMP_WORDS[COMP_CWORD-1]} PREV_O=$PREV
-    [[ $PREV == [,=] ]] && PREV=${COMP_WORDS[COMP_CWORD-2]}
+    cur=${COMP_WORDS[COMP_CWORD]} cur_o=$cur
+    [[ ${COMP_LINE:COMP_POINT-1:1} = " " || $COMP_WORDBREAKS == *$cur* ]] && cur=""
+    prev=${COMP_WORDS[COMP_CWORD-1]} prev_o=$prev
+    [[ $prev == [,=] ]] && prev=${COMP_WORDS[COMP_CWORD-2]}
     if (( COMP_CWORD > 4 )); then
-        [[ $CUR_O == [,=] ]] && PREV2=${COMP_WORDS[COMP_CWORD-3]} || PREV2=${COMP_WORDS[COMP_CWORD-4]}
+        [[ $cur_o == [,=] ]] && prev2=${COMP_WORDS[COMP_CWORD-3]} || prev2=${COMP_WORDS[COMP_CWORD-4]}
     fi
-    COMP_LINE2=${COMP_LINE:0:$COMP_POINT}
-    eval arr=( $COMP_LINE2 ) 2> /dev/null
+    comp_line2=${COMP_LINE:0:$COMP_POINT}
+    eval arr=( $comp_line2 ) 2> /dev/null
     for (( i = ${#arr[@]} - 1; i > 0; i-- )); do
         if [[ ${arr[i]} == -* ]]; then
-            PREO=${arr[i]%%[^[:alnum:]_-]*}
-            [[ ($PREO == ${COMP_LINE2##*[ ]}) && ($PREO == $CUR_O) ]] && PREO=""
+            preo=${arr[i]%%[^[:alnum:]_-]*}
+            [[ ($preo == ${comp_line2##*[ ]}) && ($preo == $cur_o) ]] && preo=""
             break
         fi
     done
     for ((i = COMP_CWORD - 1; i > 0; i--)); do
-        [[ ${COMP_WORDS[i]} == -* ]] && { PREO2=${COMP_WORDS[i]}; break ;}
+        [[ ${COMP_WORDS[i]} == -* ]] && { preo2=${COMP_WORDS[i]}; break ;}
     done
 
-    if [[ $PREO == @(-Wl|-Wa) || $PREV == @(-Xlinker|-Xassembler) ]]; then
-        HELP=$( $CMD -v --help 2> /dev/null )
-        [[ $PREO == -Wl || $PREV == -Xlinker ]] && args="ld" || args="as"
+    if [[ $preo == @(-Wl|-Wa) || $prev == @(-Xlinker|-Xassembler) ]]; then
+        help=$( $cmd -v --help 2> /dev/null )
+        [[ $preo == -Wl || $prev == -Xlinker ]] && args="ld" || args="as"
         local filter_str='/^Usage: .*'"$args"' /,/^Report bugs to/' 
 
-        if [[ $CUR == -* || $PREV == @(-Xlinker|-Xassembler) ]]; then
-            WORDS=$(<<< $HELP sed -En "$filter_str"'{
+        if [[ $cur == -* || $prev == @(-Xlinker|-Xassembler) ]]; then
+            words=$(<<< $help sed -En "$filter_str"'{
             s/^\s{,3}((-[^ ,=]+([ =][^ ,]+)?)(, *-[^ ,=]+([ =][^ ,]+)?)*)(.*)/\1/g; tX;
             b; :X s/((^|[^[:alnum:]])-[][[:alnum:]_+-]+=?)|./\1 /g; 
             s/[,/ ]+/\n/g; s/\[=$/=/Mg; s/\[[[:alnum:]-]+$//Mg;  
             :Y h; tR1; :R1 s/([^=]+)\[(\|?(\w+-?))+](.*)/\1\3\4/; p; tZ; b; 
             :Z g; s/\|?\w+-?]/]/; tR2 :R2 s/-\[]([[:alnum:]])/-\1/p; tE; /\[]/! bY :E }')
 
-        elif [[ $PREO == -Wl && $PREV == -z ]]; then
-            WORDS=$(<<< $HELP sed -En "$filter_str"'{ s/^\s*-z ([[:alnum:]-]+=?).*/\1/p }')
+        elif [[ $preo == -Wl && $prev == -z ]]; then
+            words=$(<<< $help sed -En "$filter_str"'{ s/^\s*-z ([[:alnum:]-]+=?).*/\1/p }')
         
-        elif [[ ($PREV == -* && $PREV != $PREO) || $PREV2 == -z ]]; then
-            WORDS=$(<<< $HELP sed -En 's/.* '"$PREV"'[ =]\[([^]]+)].*/\1/; tX; b; :X s/[,|]/\n/g; p; Q')
+        elif [[ ($prev == -* && $prev != $preo) || $prev2 == -z ]]; then
+            words=$(<<< $help sed -En 's/.* '"$prev"'[ =]\[([^]]+)].*/\1/; tX; b; :X s/[,|]/\n/g; p; Q')
         fi
 
-    elif [[ $PREO == --help ]]; then
-        HELP=$( $CMD -v --help 2> /dev/null )
+    elif [[ $preo == --help ]]; then
+        help=$( $cmd -v --help 2> /dev/null )
         [[ $COMP_WORDBREAKS != *"^"* ]] && COMP_WORDBREAKS+="^"
-        WORDS=$( <<< $HELP sed -En '/^\s{,5}--help=/{s/--help=|[^[:alpha:]]/\n/g; p; Q}' )
+        words=$( <<< $help sed -En '/^\s{,5}--help=/{s/--help=|[^[:alpha:]]/\n/g; p; Q}' )
 
-    elif [[ $CUR == -* || $PREO == --completion ]]; then
-        WORDS=$( $CMD --completion="-" | sed -E 's/([ \t=]).*$/\1/' )
-        if [[ $CUR == *[[*?]* ]]; then
+    elif [[ $cur == -* || $preo == --completion ]]; then
+        words=$( $cmd --completion="-" | sed -E 's/([ \t=]).*$/\1/' )
+        if [[ $cur == *[[*?]* ]]; then
             declare -A aar; IFS=$'\n'; echo
-            for v in $WORDS; do 
+            for v in $words; do 
                 let aar[$v]++
-                if [[ $v == $CUR && ${aar[$v]} -eq 1 ]]; then
+                if [[ $v == $cur && ${aar[$v]} -eq 1 ]]; then
                     echo -e "\\e[36m$v\\e[0m"
                 fi
             done | less -FRSXi
-            IFS=$'\n' COMPREPLY=( "${CUR_O%%[[*?]*}" )
+            IFS=$'\n' COMPREPLY=( "${cur_o%%[[*?]*}" )
             bind -x '"\011": _gcc_bind'
 
-        elif [[ $PREO == --completion && $PREV != $PREO ]]; then
-            [[ $PREO2 == $PREV ]] && args="$PREV=" || args="$PREO2=$PREV="
-            WORDS=$( $CMD --completion="$args" | sed -E 's/^'"$args"'//; s/=.*$/=/' )
+        elif [[ $preo == --completion && $prev != $preo ]]; then
+            [[ $preo2 == $prev ]] && args="$prev=" || args="$preo2=$prev="
+            words=$( $cmd --completion="$args" | sed -E 's/^'"$args"'//; s/=.*$/=/' )
         fi
 
-    elif [[ -n $PREO ]]; then
-        [[ $PREV == $PREO ]] && args="$PREV=" || args="$PREO=$PREV="
-        WORDS=$( $CMD --completion="$args" | sed -E 's/^'"$args"'//; s/=.*$/=/' )
+    elif [[ -n $preo ]]; then
+        [[ $prev == $preo ]] && args="$prev=" || args="$preo=$prev="
+        words=$( $cmd --completion="$args" | sed -E 's/^'"$args"'//; s/=.*$/=/' )
     fi
 
     if [[ -z $COMPREPLY ]]; then
-        WORDS=$( <<< $WORDS sed -E 's/^[[:blank:]]+|[[:blank:]]+$//g' )
-        IFS=$'\n' COMPREPLY=($(compgen -W "$WORDS" -- "$CUR"))
+        words=$( <<< $words sed -E 's/^[[:blank:]]+|[[:blank:]]+$//g' )
+        IFS=$'\n' COMPREPLY=($(compgen -W "$words" -- "$cur"))
     fi
     [[ ${COMPREPLY: -1} == [=,] ]] && compopt -o nospace
 }
 
 extglob_reset=$(shopt -p extglob)
 shopt -s extglob
-WORDS="cc gcc c++ g++ gfortran f77 f95 "
-WORDS+=$( shopt -s nullglob; IFS=:
+words="cc gcc c++ g++ gfortran f77 f95 "
+words+=$( shopt -s nullglob; IFS=:
 for dir in $PATH; do
     cd "$dir" 2>/dev/null &&
     echo gcc-+([0-9]) g++-+([0-9]) *-gcc *-g++ *-gcc-+([0-9]) *-g++-+([0-9])
 done 
 )
-complete -o default -o bashdefault -F _gcc $WORDS
+complete -o default -o bashdefault -F _gcc $words
 $extglob_reset
-unset -v extglob_reset WORDS
+unset -v extglob_reset words
 
 
