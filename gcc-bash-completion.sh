@@ -41,13 +41,10 @@ _gcc()
     fi
     comp_line2=${COMP_LINE:0:$COMP_POINT}
     eval arr=( $comp_line2 ) 2> /dev/null
-    for (( i = ${#arr[@]} - 1; i > 0; i-- )); do
-        if [[ ${arr[i]} == -* ]]; then
-            preo=${arr[i]%%[^[:alnum:]_-]*}
-            [[ ($preo == ${comp_line2##*[ ]}) && ($preo == $cur_o) ]] && preo=""
-            break
-        fi
-    done
+    if [[ ${arr[ ${#arr[@]} - 1 ]} == -* && -n $cur_o ]]; then
+        preo=${arr[ ${#arr[@]} - 1 ]%%[^[:alnum:]_-]*}
+        [[ ($preo == ${comp_line2##*[ ]}) && ($preo == $cur_o) ]] && preo=""
+    fi
     for ((i = COMP_CWORD - 1; i > 0; i--)); do
         [[ ${COMP_WORDS[i]} == -* ]] && { preo2=${COMP_WORDS[i]}; break ;}
     done
@@ -74,7 +71,7 @@ _gcc()
             words=$(<<< $help sed -En 's/.* '"$prev"'[ =]\[([^]]+)].*/\1/; tX; b; :X s/[,|]/\n/g; p; Q')
         fi
 
-    elif [[ $preo == --help && -n $cur_o ]]; then
+    elif [[ $preo == --help ]]; then
         help=$( $cmd -v --help 2> /dev/null )
         [[ $COMP_WORDBREAKS != *"^"* ]] && COMP_WORDBREAKS+="^"
         words=$( <<< $help sed -En '/^\s{,10}--help=/{s/--help=|[^[:alpha:]]/\n/g; p; Q}' )
