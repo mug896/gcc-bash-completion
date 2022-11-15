@@ -10,6 +10,18 @@ _init_comp_wordbreaks()
     fi
 }
 _gcc_bind() { bind '"\011": complete' ;}
+_gcc_search()
+{
+    declare -A aar; IFS=$'\n'; echo
+    for v in $words; do
+        let aar[$v]++
+        if [[ $v == $cur && ${aar[$v]} -eq 1 ]]; then
+            echo -e "\\e[36m$v\\e[0m"
+        fi
+    done | less -FRSXi
+    IFS=$'\n' COMPREPLY=( "${cur_o%%[[*?]*}" )
+    bind -x '"\011": _gcc_bind'
+}
 _gcc()
 {
     # It is recommended that all completion functions start with _init_comp_wordbreaks,
@@ -53,6 +65,8 @@ _gcc()
             :Y h; tR1; :R1 s/([^=]+)\[(\|?(\w+-?))+](.*)/\1\3\4/; p; tZ; b; 
             :Z g; s/\|?\w+-?]/]/; tR2 :R2 s/-\[]([[:alnum:]])/-\1/p; tE; /\[]/! bY :E }')
 
+            [[ $cur == *[[*?]* ]] && _gcc_search
+
         elif [[ $preo == -Wl && $prev == -z ]]; then
             words=$(<<< $help sed -En "$filter_str"'{ s/^\s*-z ([[:alnum:]-]+=?).*/\1/p }')
         
@@ -68,16 +82,7 @@ _gcc()
     elif [[ $cur == -* || $preo == --completion ]]; then
         words=$( $cmd --completion="-" | sed -E 's/([ \t=]).*$/\1/' )
         if [[ $cur == *[[*?]* ]]; then
-            declare -A aar; IFS=$'\n'; echo
-            for v in $words; do 
-                let aar[$v]++
-                if [[ $v == $cur && ${aar[$v]} -eq 1 ]]; then
-                    echo -e "\\e[36m$v\\e[0m"
-                fi
-            done | less -FRSXi
-            IFS=$'\n' COMPREPLY=( "${cur_o%%[[*?]*}" )
-            bind -x '"\011": _gcc_bind'
-
+            _gcc_search
         elif [[ $preo == --completion && $prev != $preo ]]; then
             [[ $preo2 == $prev ]] && args="$prev=" || args="$preo2=$prev="
             words=$( $cmd --completion="$args" | sed -E 's/^'"$args"'//; s/=.*$/=/' )
