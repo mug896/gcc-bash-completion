@@ -19,7 +19,7 @@ _gcc_search()
             echo -e "\\e[36m$v\\e[0m"
         fi
     done | less -FRSXi
-    IFS=$'\n' COMPREPLY=( "${cur_o%%[[*?]*}" )
+    COMPREPLY=( "${cur_o%%[[*?]*}" )
     bind -x '"\011": _gcc_bind'
 }
 _gcc()
