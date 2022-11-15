@@ -74,10 +74,10 @@ _gcc()
             words=$(<<< $help sed -En 's/.* '"$prev"'[ =]\[([^]]+)].*/\1/; tX; b; :X s/[,|]/\n/g; p; Q')
         fi
 
-    elif [[ $preo == --help ]]; then
+    elif [[ $preo == --help && -n $cur_o ]]; then
         help=$( $cmd -v --help 2> /dev/null )
         [[ $COMP_WORDBREAKS != *"^"* ]] && COMP_WORDBREAKS+="^"
-        words=$( <<< $help sed -En '/^\s{,5}--help=/{s/--help=|[^[:alpha:]]/\n/g; p; Q}' )
+        words=$( <<< $help sed -En '/^\s{,10}--help=/{s/--help=|[^[:alpha:]]/\n/g; p; Q}' )
 
     elif [[ $cur == -* || $preo == --completion ]]; then
         words=$( $cmd --completion="-" | sed -E 's/([ \t=]).*$/\1/' )
