@@ -22,7 +22,7 @@ _gcc_search()
         fi
     done 
     (( count >= LINES )) && opt="+Gg"
-    echo -e "${res%$'\n'}" | less -FRSXiN $opt
+    echo -ne "$res" | less -FRSXiN $opt
     COMPREPLY=( "${cur_o%%[[*?]*}" )
     bind -x '"\011": _gcc_bind'
 } 
