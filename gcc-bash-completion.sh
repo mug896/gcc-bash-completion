@@ -94,7 +94,7 @@ _gcc()
         words=$( $cmd --completion="$args" | sed -E 's/^'"$args"'//; s/=.*$/=/' )
     fi
 
-    if [[ -z $COMPREPLY ]]; then
+    if ! [[ -v COMPREPLY ]]; then
         words=$( <<< $words sed -E 's/^[[:blank:]]+|[[:blank:]]+$//g' )
         IFS=$'\n' COMPREPLY=($(compgen -W "$words" -- "$cur"))
     fi
