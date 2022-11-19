@@ -100,17 +100,9 @@ _gcc()
     [[ ${COMPREPLY: -1} == "=" ]] && compopt -o nospace
 }
 
-extglob_reset=$(shopt -p extglob)
-shopt -s extglob
 words="cc gcc c++ g++ gfortran f77 f95 "
-words+=$( shopt -s nullglob; IFS=:
-for dir in $PATH; do
-    cd "$dir" 2>/dev/null &&
-    echo gcc-+([0-9]) g++-+([0-9]) *-gcc *-g++ *-gcc-+([0-9]) *-g++-+([0-9])
-done 
-)
+words+=$( compgen -c | grep -E '^[[:alpha:]].*-(gcc|g\+\+)(-[[:digit:].]+)?$' )
 complete -o default -o bashdefault -F _gcc $words
-$extglob_reset
-unset -v extglob_reset words
+unset -v words
 
 
