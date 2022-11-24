@@ -65,7 +65,7 @@ _gcc()
             :X h; tR1; :R1 s/([^=]+)\[(\|?(\w+-?))+](.*)/\1\3\4/; p; T; 
             g; s/\|?\w+-?]/]/; tR2 :R2 s/-\[]([[:alnum:]])/-\1/p; t; /\[]/!bX }')
 
-            [[ $cur == *[[*?]* ]] && _gcc_search
+            [[ $cur == *[[*?]* ]] && { _gcc_search; return ;}
 
         elif [[ $preo == -Wl && $prev == -z ]]; then
             words=$(<<< $help sed -En "$filter_str"'{ s/^\s*-z ([[:alnum:]-]+=?).*/\1/p }')
@@ -83,6 +83,7 @@ _gcc()
         words=$( $cmd --completion="-" | sed -E 's/([ \t=]).*$/\1/' )
         if [[ $cur == *[[*?]* ]]; then
             _gcc_search
+            return
         elif [[ $preo == --completion && $prev != $preo ]]; then
             [[ $preo2 == $prev ]] && args="$prev=" || args="$preo2=$prev="
             words=$( $cmd --completion="$args" | sed -E 's/^'"$args"'//; s/=.*$/=/' )
