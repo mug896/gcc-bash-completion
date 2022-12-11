@@ -11,16 +11,21 @@ For example, you can try to search for completion words using the glob character
 ```sh
 bash$ gcc -save-temps -*alias*[tab]
 . . .
--Wattribute-alias=
---warn-attribute-alias=
--Wstrict-aliasing
--Wno-strict-aliasing
---warn-strict-aliasing
---warn-no-strict-aliasing
--Wstrict-aliasing=
---warn-strict-aliasing=
+15 --warn-aliasing
+16 --warn-attribute-alias
+17 --warn-attribute-alias=
+18 --warn-no-aliasing
+19 --warn-no-attribute-alias
+20 --warn-no-strict-aliasing
 . . .                       # "q"
 [tab]                       # [tab] to exit to the prompt.
+
+
+# After searching, you can use the numbers in the list to input completion words.
+
+$ gcc -save-temps 15[tab]
+
+$ gcc -save-temps --warn-aliasing
 
 ----------------------------------------------------------
 
