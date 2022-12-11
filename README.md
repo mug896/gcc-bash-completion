@@ -22,7 +22,6 @@ bash$ gcc -save-temps -*alias*[tab]
 
 
 # After searching, you can use the numbers in the list to input completion words.
-
 $ gcc -save-temps 15[tab]
 
 $ gcc -save-temps --warn-aliasing
