@@ -13,12 +13,14 @@ _gcc_bind() { bind '"\011": complete' ;}
 _gcc_search()
 {
     local res count opt
+    _gcc_number=""
     words=$( <<< $words sed -E 's/^[ \t]+|[ \t]+$//g' | sort -u )
     local IFS=$'\n'; echo
     for v in $words; do
         if [[ $v == $cur ]]; then
             res+=$'\e[36m'"$v"$'\e[0m\n'
             let count++
+            _gcc_number+="$count $v"$'\n'
         fi
     done 
     (( count >= LINES )) && opt="+Gg"
@@ -52,7 +54,11 @@ _gcc()
         [[ ${COMP_WORDS[i]} == -* ]] && { preo2=${COMP_WORDS[i]}; break ;}
     done
 
-    if [[ $preo == @(-Wl|-Wa) || $prev == @(-Xlinker|-Xassembler) ]]; then
+    if [[ $cur == +([0-9]) ]]; then
+        words=$( <<< $_gcc_number awk '$1 == '"$cur"' { print $2; exit }' )
+        COMPREPLY=( "$words" )
+
+    elif [[ $preo == @(-Wl|-Wa) || $prev == @(-Xlinker|-Xassembler) ]]; then
         help=$( $cmd -v --help 2> /dev/null )
         [[ $preo == -Wl || $prev == -Xlinker ]] && args="ld" || args="as"
         local filter_str='/^Usage: .*'"$args"' /,/^Report bugs to/' 
