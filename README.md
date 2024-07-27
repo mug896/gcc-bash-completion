@@ -5,26 +5,21 @@ command as the original function for generating completion words.
 so there is no difference in the results.
 just added a few features.
 
+```sh
+# This script requires the external command 'fsf' to use.
+# Therefore, first install the 'fsf' command as follows.
+
+bash$ sudo apt install fsf
+```
+
 For example, you can try to search for completion words using the glob characters 
 `*`, `?`, `[...]` while writing the command line like this:
 
 ```sh
+
 bash$ gcc -save-temps -*alias*[tab]
-. . .
-15 --warn-aliasing
-16 --warn-attribute-alias
-17 --warn-attribute-alias=
-18 --warn-no-aliasing
-19 --warn-no-attribute-alias
-20 --warn-no-strict-aliasing
-. . .                       # "q"
-[tab]                       # [tab] to exit to the prompt.
 
-
-# After searching, you can use the numbers in the list to input completion words.
-$ gcc -save-temps 15[tab]
-
-$ gcc -save-temps --warn-aliasing
+bash$ gcc -save-temps -*[tab]
 
 ----------------------------------------------------------
 

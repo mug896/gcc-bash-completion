@@ -9,23 +9,17 @@ _init_comp_wordbreaks()
         "$'PROMPT_COMMAND=${PROMPT_COMMAND#*$\'\\n\'}\n'$PROMPT_COMMAND
     fi
 }
-_gcc_bind() { bind '"\011": complete' ;}
 _gcc_search()
 {
-    local res count opt
-    _gcc_number=""
+    local res
     words=$( <<< $words sed -E 's/^[ \t]+|[ \t]+$//g' | sort -u )
-    local IFS=$'\n'; echo
     for v in $words; do
         if [[ $v == $cur ]]; then
-            res+=$'\e[36m'"$v"$'\e[0m\n'
-            let count++
-            _gcc_number+="$count $v"$'\n'
+            res+=$v$'\n'
         fi
     done 
-    (( count >= LINES )) && opt="+Gg"
-    less -FRSXiN $opt <<< ${res%$'\n'}
-    bind -x '"\011": _gcc_bind'
+    words=$( <<< $res fzf -m )
+    COMPREPLY=( "${words//$'\n'/ }" )
 } 
 _gcc()
 {
@@ -71,7 +65,7 @@ _gcc()
             :X h; tR1; :R1 s/([^=]+)\[(\|?(\w+-?))+](.*)/\1\3\4/; p; T; 
             g; s/\|?\w+-?]/]/; tR2 :R2 s/-\[]([[:alnum:]])/-\1/p; t; /\[]/!bX }')
 
-            [[ $cur == *[[*?]* ]] && { _gcc_search; return ;}
+            [[ $cur == *[[*?]* ]] && _gcc_search
 
         elif [[ $preo == -Wl && $prev == -z ]]; then
             words=$(<<< $help sed -En "$filter_str"'{ s/^\s*-z ([[:alnum:]-]+=?).*/\1/p }')
@@ -89,7 +83,6 @@ _gcc()
         words=$( $cmd --completion="-" | sed -E 's/([ \t=]).*$/\1/' )
         if [[ $cur == *[[*?]* ]]; then
             _gcc_search
-            return
         elif [[ $preo == --completion && $prev != $preo ]]; then
             [[ $preo2 == $prev ]] && args="$prev=" || args="$preo2=$prev="
             words=$( $cmd --completion="$args" | sed -E 's/^'"$args"'//; s/=.*$/=/' )
