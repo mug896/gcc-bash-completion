@@ -11,8 +11,8 @@ _init_comp_wordbreaks()
 }
 _gcc_search()
 {
-    local res
     words=$( <<< $words sed -E 's/^[ \t]+|[ \t]+$//g' | sort -u )
+    local res IFS=$'\n'
     for v in $words; do
         if [[ $v == $cur ]]; then
             res+=$v$'\n'
