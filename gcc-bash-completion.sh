@@ -18,7 +18,7 @@ _gcc_search()
             res+=$v$'\n'
         fi
     done 
-    words=$( <<< $res fzf -m --cycle )
+    words=$( <<< $res fzf -m --cycle --info=inline )
     COMPREPLY=( "${words//$'\n'/ }" )
 } 
 _gcc()
