@@ -48,11 +48,7 @@ _gcc()
         [[ ${COMP_WORDS[i]} == -* ]] && { preo2=${COMP_WORDS[i]}; break ;}
     done
 
-    if [[ $cur == +([0-9]) ]]; then
-        words=$( <<< $_gcc_number awk '$1 == '"$cur"' { print $2; exit }' )
-        COMPREPLY=( "$words" )
-
-    elif [[ $preo == @(-Wl|-Wa) || $prev == @(-Xlinker|-Xassembler) ]]; then
+    if [[ $preo == @(-Wl|-Wa) || $prev == @(-Xlinker|-Xassembler) ]]; then
         help=$( $cmd -v --help 2> /dev/null )
         [[ $preo == -Wl || $prev == -Xlinker ]] && args="ld" || args="as"
         local filter_str='/^Usage: .*'"$args"' /,/^Report bugs to/' 
